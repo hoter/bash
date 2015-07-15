@@ -1,0 +1,8 @@
+{
+    "require": {
+        "jolicode/jolinotif": "^1.0",
+        "guzzlehttp/guzzle": "^6.0",
+        "symfony/dom-crawler": "^2.7",
+        "symfony/css-selector": "^2.7"
+    }
+}
