@@ -17,30 +17,30 @@ elseif ($pid) {
 posix_setsid();
 
 $client = new GuzzleHttp\Client();
-$res = $client->get('http://bash.im/random');
-
-$html = $res->getBody()->getContents();
-
-$crawler = new Crawler($html);
 
 // Create a Notifier (or null if no notifier supported)
 $notifier = NotifierFactory::create();
 
-if ($notifier) {
- // Create your notification
- $notification =
-  (new Notification())
-   ->setTitle('bash.im')
-   ->setBody($crawler->filter('div.text')->first()->html())
-  ;
+$stop_server = FALSE;
+while (!$stop_server) {
+ $res = $client->get('http://bash.im/random');
+ $html = $res->getBody()->getContents();
 
- // Send it
- $notifier->send($notification);
+ $crawler = new Crawler($html);
 
+ if ($notifier) {
+  // Create your notification
+  $notification =
+   (new Notification())
+    ->setTitle('bash.im')
+    ->setBody($crawler->filter('div.text')->first()->html())
+   ;
 
- $stop_server = FALSE;
- while (!$stop_server) {
-  sleep(300);
+  // Send it
   $notifier->send($notification);
+  sleep(500);
+ }
+ else {
+  break;
  }
 }
